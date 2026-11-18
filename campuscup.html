@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CampusCup | Competition Manager</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+    background: #f4f6fb;
+    color: #20243a;
+}
+
+header {
+    background: #171b36;
+    color: white;
+    padding: 20px 7%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.logo span {
+    color: #8b83ff;
+}
+
+header p {
+    color: #c8c9d8;
+    font-size: 13px;
+}
+
+.container {
+    width: 86%;
+    margin: 30px auto;
+}
+
+.welcome {
+    margin-bottom: 25px;
+}
+
+.welcome h1 {
+    font-size: 28px;
+    margin-bottom: 6px;
+}
+
+.welcome p {
+    color: #777d91;
+}
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+    margin-bottom: 30px;
+}
+
+.stat-card {
+    background: white;
+    padding: 22px;
+    border-radius: 13px;
+    box-shadow: 0 3px 15px #00000008;
+}
+
+.stat-card p {
+    color: #777d91;
+    font-size: 14px;
+}
+
+.stat-card h2 {
+    margin-top: 12px;
+    font-size: 29px;
+}
+
+.purple { border-left: 4px solid #7568ee; }
+.blue { border-left: 4px solid #3998e9; }
+.green { border-left: 4px solid #27b77b; }
+.orange { border-left: 4px solid #f5a13b; }
+
+.tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 22px;
+    flex-wrap: wrap;
+}
+
+.tab {
+    border: none;
+    padding: 11px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    background: white;
+    color: #555;
+    font-weight: 600;
+}
+
+.tab.active {
+    background: #7165ed;
+    color: white;
+}
+
+.section {
+    display: none;
+}
+
+.section.active {
+    display: block;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+button {
+    cursor: pointer;
+}
+
+.primary-btn {
+    background: #7165ed;
+    color: white;
+    border: none;
+    padding: 11px 18px;
+    border-radius: 8px;
+    font-weight: 600;
+}
+
+.primary-btn:hover {
+    background: #584bd0;
+}
+
+.controls {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+input, select {
+    padding: 12px;
+    border: 1px solid #dddfea;
+    border-radius: 8px;
+    outline: none;
+    background: white;
+    width: 100%;
+}
+
+.controls input {
+    flex: 1;
+    min-width: 180px;
+}
+
+.controls select {
+    width: 190px;
+}
+
+.events-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.event-card {
+    background: white;
+    border-radius: 13px;
+    padding: 21px;
+    box-shadow: 0 3px 15px #00000008;
+}
+
+.event-icon {
+    font-size: 30px;
+    margin-bottom: 12px;
+}
+
+.category {
+    display: inline-block;
+    padding: 5px 10px;
+    background: #efedff;
+    color: #685ce0;
+    border-radius: 20px;
+    font-size: 12px;
+    margin-bottom: 12px;
+}
+
+.event-card h3 {
+    margin-bottom: 12px;
+}
+
+.event-card p {
+    color: #777d91;
+    font-size: 14px;
+    margin: 8px 0;
+}
+
+.progress {
+    background: #ececf4;
+    height: 8px;
+    border-radius: 10px;
+    margin: 14px 0;
+    overflow: hidden;
+}
+
+.progress-bar {
+    background: #7165ed;
+    height: 100%;
+}
+
+.card-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 15px;
+    flex-wrap: wrap;
+}
+
+.small-btn {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 6px;
+    background: #efedff;
+    color: #6559d7;
+}
+
+.delete-btn {
+    background: #fff0f0;
+    color: #dc4848;
+}
+
+.register-btn {
+    background: #7165ed;
+    color: white;
+}
+
+.table-wrap {
+    background: white;
+    border-radius: 12px;
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 650px;
+}
+
+th, td {
+    padding: 16px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+    font-size: 14px;
+}
+
+th {
+    background: #f8f8fc;
+    color: #777d91;
+}
+
+.status {
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 12px;
+    background: #e6f8ef;
+    color: #168b55;
+}
+
+.full {
+    background: #fff0f0;
+    color: #d44a4a;
+}
+
+.empty {
+    text-align: center;
+    padding: 35px;
+    color: #888;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: #0008;
+    justify-content: center;
+    align-items: center;
+    padding: 15px;
+    z-index: 10;
+}
+
+.modal-content {
+    background: white;
+    padding: 25px;
+    border-radius: 14px;
+    width: 100%;
+    max-width: 440px;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.modal-content h2 {
+    margin-bottom: 20px;
+}
+
+.modal-content label {
+    display: block;
+    margin: 12px 0 6px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.cancel-btn {
+    background: #eeeef4;
+    border: none;
+    padding: 11px 18px;
+    border-radius: 8px;
+}
+
+.message {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    background: #202b45;
+    color: white;
+    padding: 14px 22px;
+    border-radius: 9px;
+    display: none;
+    z-index: 20;
+}
+
+footer {
+    text-align: center;
+    padding: 25px;
+    color: #888;
+    font-size: 13px;
+}
+
+@media(max-width: 900px) {
+    .stats { grid-template-columns: repeat(2, 1fr); }
+    .events-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media(max-width: 600px) {
+    .container { width: 92%; }
+    header { padding: 18px 4%; }
+    .stats { grid-template-columns: 1fr 1fr; gap: 10px; }
+    .stat-card { padding: 15px; }
+    .stat-card h2 { font-size: 23px; }
+    .events-grid { grid-template-columns: 1fr; }
+    .welcome h1 { font-size: 23px; }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">Campus<span>Cup.</span></div>
+    <p>Campus Competition Registration Manager</p>
+</header>
+
+<div class="container">
+
+    <div class="welcome">
+        <h1>Welcome to CampusCup 👋</h1>
+        <p>Manage competitions, register teams and track participation.</p>
+    </div>
+
+    <div class="stats">
+        <div class="stat-card purple">
+            <p>Total Competitions</p>
+            <h2 id="totalEvents">0</h2>
+        </div>
+        <div class="stat-card blue">
+            <p>Total Registrations</p>
+            <h2 id="totalRegistrations">0</h2>
+        </div>
+        <div class="stat-card green">
+            <p>Available Seats</p>
+            <h2 id="availableSeats">0</h2>
+        </div>
+        <div class="stat-card orange">
+            <p>Full Competitions</p>
+            <h2 id="fullEvents">0</h2>
+        </div>
+    </div>
+
+    <div class="tabs">
+        <button class="tab active" onclick="showTab('events',this)">Competitions</button>
+        <button class="tab" onclick="showTab('registrations',this)">Registrations</button>
+    </div>
+
+    <!-- COMPETITIONS -->
+
+    <section id="events" class="section active">
+
+        <div class="section-header">
+            <h2>Explore Competitions</h2>
+            <button class="primary-btn" onclick="openEventModal()">
+                + Add Competition
+            </button>
+        </div>
+
+        <div class="controls">
+            <input type="text" id="search" placeholder="Search competitions..." oninput="renderEvents()">
+
+            <select id="filter" onchange="renderEvents()">
+                <option value="All">All Categories</option>
+                <option value="Technical">Technical</option>
+                <option value="Sports">Sports</option>
+                <option value="Cultural">Cultural</option>
+                <option value="Academic">Academic</option>
+            </select>
+        </div>
+
+        <div class="events-grid" id="eventsGrid"></div>
+
+    </section>
+
+    <!-- REGISTRATIONS -->
+
+    <section id="registrations" class="section">
+
+        <div class="section-header">
+            <h2>Team Registrations</h2>
+        </div>
+
+        <div class="controls">
+            <input id="registrationSearch" placeholder="Search team or leader..." oninput="renderRegistrations()">
+            <select id="registrationFilter" onchange="renderRegistrations()">
+                <option value="All">All Events</option>
+            </select>
+        </div>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Team Name</th>
+                        <th>Team Leader</th>
+                        <th>Competition</th>
+                        <th>Members</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="registrationTable"></tbody>
+            </table>
+        </div>
+
+    </section>
+
+</div>
+
+<!-- EVENT MODAL -->
+
+<div class="modal" id="eventModal">
+    <div class="modal-content">
+        <h2 id="eventModalTitle">Add Competition</h2>
+
+        <form id="eventForm">
+            <input type="hidden" id="eventId">
+
+            <label>Competition Name</label>
+            <input id="eventName" required placeholder="Enter competition name">
+
+            <label>Category</label>
+            <select id="eventCategory" required>
+                <option value="Technical">Technical</option>
+                <option value="Sports">Sports</option>
+                <option value="Cultural">Cultural</option>
+                <option value="Academic">Academic</option>
+            </select>
+
+            <label>Competition Date</label>
+            <input type="date" id="eventDate" required>
+
+            <label>Maximum Team Registrations</label>
+            <input type="number" id="eventCapacity" min="1" required placeholder="Example: 20">
+
+            <div class="modal-actions">
+                <button class="primary-btn" type="submit">Save Competition</button>
+                <button type="button" class="cancel-btn" onclick="closeModals()">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- REGISTRATION MODAL -->
+
+<div class="modal" id="registerModal">
+    <div class="modal-content">
+        <h2>Team Registration</h2>
+
+        <form id="registerForm">
+            <input type="hidden" id="registerEventId">
+
+            <label>Team Name</label>
+            <input id="teamName" required placeholder="Enter team name">
+
+            <label>Team Leader Name</label>
+            <input id="leaderName" required placeholder="Enter leader name">
+
+            <label>Email Address</label>
+            <input type="email" id="leaderEmail" required placeholder="Enter email">
+
+            <label>Number of Team Members</label>
+            <input type="number" id="members" min="1" max="10" value="2" required>
+
+            <div class="modal-actions">
+                <button class="primary-btn" type="submit">Confirm Registration</button>
+                <button type="button" class="cancel-btn" onclick="closeModals()">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="message" id="message"></div>
+
+<footer>
+    ©️ 2026 CampusCup | Campus Competition Management System
+</footer>
+
+<script>
+
+// Initial sample competitions
+let events = JSON.parse(localStorage.getItem("campusEvents")) || [
+    {id:1,name:"Hackathon 2026",category:"Technical",date:"2026-12-10",capacity:20},
+    {id:2,name:"Football Tournament",category:"Sports",date:"2026-12-15",capacity:16},
+    {id:3,name:"Dance Competition",category:"Cultural",date:"2026-12-20",capacity:25},
+    {id:4,name:"Quiz Championship",category:"Academic",date:"2026-12-25",capacity:15}
+];
+
+let registrations = JSON.parse(localStorage.getItem("campusRegistrations")) || [];
+
+function saveData() {
+    localStorage.setItem("campusEvents", JSON.stringify(events));
+    localStorage.setItem("campusRegistrations", JSON.stringify(registrations));
+}
+
+function showMessage(text) {
+    const msg = document.getElementById("message");
+    msg.innerText = text;
+    msg.style.display = "block";
+
+    setTimeout(() => {
+        msg.style.display = "none";
+    }, 3000);
+}
+
+function getCount(id) {
+    return registrations.filter(r => r.eventId === id).length;
+}
+
+function updateDashboard() {
+    const total = events.length;
+    const registered = registrations.length;
+
+    const seats = events.reduce((sum,e) =>
+        sum + Math.max(0,e.capacity-getCount(e.id)),0);
+
+    const full = events.filter(e =>
+        getCount(e.id) >= e.capacity).length;
+
+    document.getElementById("totalEvents").innerText = total;
+    document.getElementById("totalRegistrations").innerText = registered;
+    document.getElementById("availableSeats").innerText = seats;
+    document.getElementById("fullEvents").innerText = full;
+}
+
+function showTab(id,button) {
+    document.querySelectorAll(".section").forEach(s =>
+        s.classList.remove("active"));
+
+    document.querySelectorAll(".tab").forEach(t =>
+        t.classList.remove("active"));
+
+    document.getElementById(id).classList.add("active");
+    button.classList.add("active");
+
+    if(id === "registrations") renderRegistrations();
+}
+
+function renderEvents() {
+    const search = document.getElementById("search").value.toLowerCase();
+    const category = document.getElementById("filter").value;
+
+    const grid = document.getElementById("eventsGrid");
+
+    const filtered = events.filter(e =>
+        e.name.toLowerCase().includes(search) &&
+        (category === "All" || e.category === category)
+    );
+
+    if(filtered.length === 0) {
+        grid.innerHTML = '<div class="empty">No competitions found.</div>';
+        return;
+    }
+
+    grid.innerHTML = filtered.map(e => {
+        const count = getCount(e.id);
+        const remaining = Math.max(0,e.capacity-count);
+        const percentage = Math.min(100,(count/e.capacity)*100);
+        const isFull = remaining === 0;
+
+        const icons = {
+            Technical:"💻",
+            Sports:"⚽",
+            Cultural:"🎭",
+            Academic:"📚"
+        };
+
+        return `
+        <div class="event-card">
+            <div class="event-icon">${icons[e.category]}</div>
+            <span class="category">${e.category}</span>
+            <h3>${escapeHTML(e.name)}</h3>
+            <p>📅 ${e.date}</p>
+            <p>👥 ${count} / ${e.capacity} teams registered</p>
+
+            <div class="progress">
+                <div class="progress-bar" style="width:${percentage}%"></div>
+            </div>
+
+            <p>${remaining} seats available</p>
+
+            <div class="card-actions">
+                <button class="small-btn register-btn"
+                    ${isFull ? "disabled" : ""}
+                    onclick="openRegisterModal(${e.id})">
+                    ${isFull ? "Registration Full" : "Register Team"}
+                </button>
+
+                <button class="small-btn"
+                    onclick="editEvent(${e.id})">Edit</button>
+
+                <button class="small-btn delete-btn"
+                    onclick="deleteEvent(${e.id})">Delete</button>
+            </div>
+        </div>`;
+    }).join("");
+}
+
+// Prevent user-entered text from being interpreted as HTML
+function escapeHTML(value) {
+    return String(value).replace(/[&<>"']/g, char => ({
+        "&":"&amp;",
+        "<":"&lt;",
+        ">":"&gt;",
+        '"':"&quot;",
+        "'":"&#39;"
+    })[char]);
+}
+
+function openEventModal() {
+    document.getElementById("eventForm").reset();
+    document.getElementById("eventId").value = "";
+    document.getElementById("eventModalTitle").innerText = "Add Competition";
+    document.getElementById("eventModal").style.display = "flex";
+}
+
+function editEvent(id) {
+    const e = events.find(x => x.id === id);
+
+    document.getElementById("eventId").value = e.id;
+    document.getElementById("eventName").value = e.name;
+    document.getElementById("eventCategory").value = e.category;
+    document.getElementById("eventDate").value = e.date;
+    document.getElementById("eventCapacity").value = e.capacity;
+
+    document.getElementById("eventModalTitle").innerText = "Update Competition";
+    document.getElementById("eventModal").style.display = "flex";
+}
+
+document.getElementById("eventForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    const id = document.getElementById("eventId").value;
+    const name = document.getElementById("eventName").value.trim();
+    const category = document.getElementById("eventCategory").value;
+    const date = document.getElementById("eventDate").value;
+    const capacity = Number(document.getElementById("eventCapacity").value);
+
+    if(!name || !date || capacity < 1) {
+        showMessage("Please enter valid details.");
+        return;
+    }
+
+    if(date < new Date().toLocaleDateString("en-CA")) {
+        showMessage("Please select a future date.");
+        return;
+    }
+
+    if(id) {
+        const event = events.find(x => x.id === Number(id));
+
+        if(capacity < getCount(event.id)) {
+            showMessage("Capacity cannot be less than registrations.");
+            return;
+        }
+
+        Object.assign(event,{name,category,date,capacity});
+        showMessage("Competition updated successfully!");
+    } else {
+        events.push({
+            id:Date.now(),
+            name,category,date,capacity
+        });
+        showMessage("Competition added successfully!");
+    }
+
+    saveData();
+    closeModals();
+    refresh();
+});
+
+function deleteEvent(id) {
+    if(!confirm("Delete this competition and its registrations?")) return;
+
+    events = events.filter(e => e.id !== id);
+    registrations = registrations.filter(r => r.eventId !== id);
+
+    saveData();
+    refresh();
+    showMessage("Competition deleted!");
+}
+
+function openRegisterModal(id) {
+    const event = events.find(e => e.id === id);
+
+    if(!event || getCount(id) >= event.capacity) {
+        showMessage("Sorry! Registration is full.");
+        return;
+    }
+
+    document.getElementById("registerForm").reset();
+    document.getElementById("registerEventId").value = id;
+    document.getElementById("registerModal").style.display = "flex";
+}
+
+document.getElementById("registerForm").addEventListener("submit",function(e) {
+    e.preventDefault();
+
+    const id = Number(document.getElementById("registerEventId").value);
+    const team = document.getElementById("teamName").value.trim();
+    const leader = document.getElementById("leaderName").value.trim();
+    const email = document.getElementById("leaderEmail").value.trim();
+    const members = Number(document.getElementById("members").value);
+
+    const event = events.find(e => e.id === id);
+
+    if(!event || getCount(id) >= event.capacity) {
+        showMessage("Registration is no longer available.");
+        return;
+    }
+
+    const duplicate = registrations.some(r =>
+        r.eventId === id &&
+        r.teamName.toLowerCase() === team.toLowerCase()
+    );
+
+    if(duplicate) {
+        showMessage("This team is already registered!");
+        return;
+    }
+
+    if(members < 1 || members > 10) {
+        showMessage("Team size must be between 1 and 10.");
+        return;
+    }
+
+    registrations.push({
+        id:Date.now(),
+        eventId:id,
+        teamName:team,
+        leaderName:leader,
+        email:email,
+        members:members,
+        status:"Confirmed"
+    });
+
+    saveData();
+    closeModals();
+    refresh();
+    showMessage("Registration confirmed successfully! 🎉");
+});
+
+function renderRegistrations() {
+    const search = document.getElementById("registrationSearch").value.toLowerCase();
+    const filter = document.getElementById("registrationFilter").value;
+
+    const select = document.getElementById("registrationFilter");
+    const oldValue = select.value;
+
+    select.innerHTML = '<option value="All">All Events</option>' +
+        events.map(e =>
+            `<option value="${e.id}">${escapeHTML(e.name)}</option>`
+        ).join("");
+
+    if([...select.options].some(o => o.value === oldValue)) {
+        select.value = oldValue;
+    }
+
+    const filtered = registrations.filter(r => {
+        const event = events.find(e => e.id === r.eventId);
+
+        return event &&
+            (r.teamName.toLowerCase().includes(search) ||
+             r.leaderName.toLowerCase().includes(search)) &&
+            (filter === "All" || String(r.eventId) === filter);
+    });
+
+    const table = document.getElementById("registrationTable");
+
+    if(filtered.length === 0) {
+        table.innerHTML = '<tr><td colspan="5" class="empty">No registrations found.</td></tr>';
+        return;
+    }
+
+    table.innerHTML = filtered.map(r => {
+        const event = events.find(e => e.id === r.eventId);
+
+        return `
+        <tr>
+            <td>${escapeHTML(r.teamName)}</td>
+            <td>${escapeHTML(r.leaderName)}</td>
+            <td>${escapeHTML(event.name)}</td>
+            <td>${r.members}</td>
+            <td><span class="status">${r.status}</span></td>
+        </tr>`;
+    }).join("");
+}
+
+function closeModals() {
+    document.getElementById("eventModal").style.display = "none";
+    document.getElementById("registerModal").style.display = "none";
+}
+
+function refresh() {
+    updateDashboard();
+    renderEvents();
+    renderRegistrations();
+}
+
+refresh();
+
+</script>
+
+</body>
+</html>
